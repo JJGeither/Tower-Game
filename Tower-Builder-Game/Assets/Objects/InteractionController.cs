@@ -93,4 +93,43 @@ public class InteractionController : MonoBehaviour
             PlayerComponentManager.Instance.AddToInventory(this.ownerObject);
         }
     }
+
+
+    // Function to draw the normal of a face
+    void DrawFaceNormal(Vector3 center, Vector3 halfExtents, Vector3 direction)
+    {
+        // Calculate the midpoint of the face
+        Vector3 faceCenter = center + Vector3.Scale(halfExtents, direction);
+
+        // Draw the normal using Gizmos
+        Gizmos.color = Color.red;  // Normal color (red)
+        Gizmos.DrawLine(faceCenter, faceCenter + direction * 1.0f);  // Draw line representing normal
+    }
+
+
+    private void OnDrawGizmos()
+    {
+        BoxCollider boxCollider = this.GetComponentInChildren<BoxCollider>();
+        if (boxCollider == null)
+            boxCollider = GetComponent<BoxCollider>();
+
+        if (boxCollider != null)
+        {
+            // Get the center and size of the box collider
+            Vector3 center = boxCollider.center;
+            Vector3 size = boxCollider.size;
+
+            // Transform the boxCollider's local space to world space
+            Vector3 worldCenter = transform.TransformPoint(center);
+            Vector3 halfExtents = size * 0.5f;
+
+            // Draw the normals for each face of the box
+            DrawFaceNormal(worldCenter, halfExtents, Vector3.forward);  // Front face
+            DrawFaceNormal(worldCenter, halfExtents, Vector3.back);     // Back face
+            DrawFaceNormal(worldCenter, halfExtents, Vector3.left);     // Left face
+            DrawFaceNormal(worldCenter, halfExtents, Vector3.right);    // Right face
+            DrawFaceNormal(worldCenter, halfExtents, Vector3.up);       // Top face
+            DrawFaceNormal(worldCenter, halfExtents, Vector3.down);     // Bottom face
+        }
+    }
 }

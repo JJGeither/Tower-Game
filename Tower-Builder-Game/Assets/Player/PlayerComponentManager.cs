@@ -8,6 +8,7 @@ public class PlayerComponentManager : MonoBehaviour
     public static PlayerComponentManager Instance { get; private set; }
     public MovementController movementController;
     public InventoryController inventoryController;
+    public Vector3 PlayerPosition { get; private set; }
 
     private void Awake()
     {
@@ -36,8 +37,14 @@ public class PlayerComponentManager : MonoBehaviour
         }
     }
 
-    public void PlaceItem(Vector3 point)
+    public void PlaceItem()
     {
-        inventoryController.PlaceItem(point);
+        inventoryController.PlaceItem();
     }
+
+    private void Update()
+    {
+        PlayerPosition = this.transform.position;
+    }
+
 }
